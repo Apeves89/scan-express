@@ -13,6 +13,7 @@ router.get('/search', function(req, res, next) {
   const options = {
     url:`${process.env.API_START}${upc}${process.env.API_END}`
   }
+  console.log(options.url);
   request(options,function(err,response,body) {
     const data = JSON.parse(body)
     console.log(data);
