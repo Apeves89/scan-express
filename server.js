@@ -7,6 +7,7 @@ var livereload = require("livereload");
 var connectLiveReload = require("connect-livereload");
 var session = require('express-session');
 var passport = require('passport');
+var methodOverride = require('method-override');
 require('dotenv').config();
 require('./config/database');
 require('./config/passport');
@@ -33,6 +34,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   secret: process.env.SECRET,
