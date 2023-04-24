@@ -77,6 +77,13 @@
       <form id="search-form" action="/search" method="GET">
         <input type="text" name="upc" id="form-input">
       </form>
+      <p><%=upc %></p>
+      <% if (hobbydb.length > 0) {%>
+        <% hobbydb.forEach(pop => {%>
+          <img src="<%= pop.attributes.images.main_photo_url %>" alt="" height="200">
+          <p><%= pop.attributes.variant_details_summary %></p>
+       <% }); %>
+        <% } %>
       <div id="reader"></div>
       <div id="result"></div>
     </main>

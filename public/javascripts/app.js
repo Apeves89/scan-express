@@ -7,8 +7,10 @@ const scanner = new Html5QrcodeScanner('reader',{
 
   scanner.render(success,error);
 
+
   function success(result) {
-    document.getElementById('result').innerHTML = `<h2>${result}</h2>`;
+    document.getElementById('form-input').setAttribute('value',result)
+    document.getElementById('search-form').submit()
     console.log(result);
     scanner.clear()
   }
