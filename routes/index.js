@@ -25,6 +25,7 @@ router.get('/search', function(req, res, next) {
 router.post('/add',function(req,res,next){
   req.body.upc = Number(req.body.upc)
   req.body.refNum = Number(req.body.refNum)
+  req.body.userId = req.user._id
   PopModel.create(req.body).then(function(popCreated) {
     console.log(popCreated,'<- pop doc')
     res.redirect('/')    

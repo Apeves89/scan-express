@@ -6,7 +6,8 @@ const popSchema = new Schema({
     name: String,
     refNum: Number,
     variant: String,
-    image: String
+    image: String,
+    userId:{type:mongoose.Schema.Types.ObjectId,ref:'User', required: true}
   }, {
     timestamps: true
   });
