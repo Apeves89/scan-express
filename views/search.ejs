@@ -75,15 +75,43 @@
     </header>
     <main>
       <form id="search-form" action="/search" method="GET">
-        <input type="text" name="upc" id="form-input">
+        <input hidden type="text" name="upc" id="form-input">
       </form>
-      <p><%=upc %></p>
-      <% if (hobbydb.length > 0) {%>
-        <% hobbydb.forEach(pop => {%>
-          <img src="<%= pop.attributes.images.main_photo_url %>" alt="" height="200">
-          <p><%= pop.attributes.variant_details_summary %></p>
-       <% }); %>
-        <% } %>
+      <div class="row">
+
+          <% if (hobbydb.length > 0) {%>
+            <% hobbydb.forEach(pop => {%>
+                <div class="col-4">
+                    <div class="card mb-3" style="max-width: 540px;">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="<%= pop.attributes.images.main_photo_url %>" class="img-fluid rounded-start" alt="...">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <% pop.attributes.related_subjects.forEach(subject => {%>
+                                            <%= subject.name %>
+                                            <% }); %></h5>
+                                    <p class="card-text">UPC: <%=upc %></p>
+                                    <p class="card-text">Variant: <%=pop.attributes.production_status[0] === 'Chase' ? 'Chase':"Common" %></p>
+                                </div>
+                            </div>
+                            <form action="/add" method="POST">
+                                <input hidden type="number" name="upc" value="<%= upc %>">
+                                <input hidden type="text" name="name" value="<% pop.attributes.related_subjects.forEach(subject => {%><%=subject.name%> <%}); %>">
+                                <input hidden type="number" name="refNum" value="<%= pop.attributes.ref_number %>">
+                                <input hidden type="text" name="variant" value="<%=pop.attributes.production_status[0] === 'Chase' ? 'Chase':"Common" %>">
+                                <input hidden type="text" name="image" value="<%= pop.attributes.images.main_photo_url %>">
+                                <input type="submit" value="Add to Collection" class="btn btn-success">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+           <% }); %>
+            <% } %>
+      </div>
+
       <div id="reader"></div>
       <div id="result"></div>
     </main>

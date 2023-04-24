@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const passport = require('passport');
 const request = require('request');
+const PopModel = require('../models/pop')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -19,6 +20,17 @@ router.get('/search', function(req, res, next) {
         
   })
 });
+router.post('/add',function(req,res,next){
+  req.body.upc = Number(req.body.upc)
+  req.body.refNum = Number(req.body.refNum)
+  PopModel.create(req.body).then(function(popCreated) {
+    console.log(popCreated,'<- pop doc')
+    res.redirect('/')    
+  }).catch((err) => {
+    console.log(err);
+    res.send('There was an error check the terminal, or log the err object')
+  })
+})
 
 // Google OAuth login route
 router.get('/auth/google', passport.authenticate(
