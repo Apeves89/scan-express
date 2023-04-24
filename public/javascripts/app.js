@@ -1,4 +1,3 @@
-import { Html5QrcodeScanner } from "https://unpkg.com/html5-qrcode";
 const scanner = new Html5QrcodeScanner('reader',{
     qrbox:{
       width:500,
