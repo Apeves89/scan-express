@@ -9,17 +9,23 @@ const isLoggedIn = require('../config/auth')
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
-router.get('/search', function(req, res, next) {
+router.get('/search', async function(req, res, next) {
   const upc = req.query.upc
   const apiUrl = process.env.API_START+upc+process.env.API_END
   const options = {
     url:apiUrl
   }
-  console.log(apiUrl);
+  let count = 0
+  if (req.user) {
+  const query = await PopModel.find({userId:req.user._id})
+  count = await PopModel.countDocuments({userId:req.user._id})
+  console.log(query,count)
+  }else{
+  
+  }
   request(options,function(err,response,body) {
     const data = JSON.parse(body)
-    console.log(data);
-    res.render('search', { title: 'Express','hobbydb': data.data, 'upc':upc });
+    res.render('search', { title: 'Express','hobbydb': data.data, 'upc':upc, 'count':count });
         
   })
 });
@@ -29,7 +35,7 @@ router.post('/add',isLoggedIn,function(req,res,next){
   req.body.userId = req.user._id
   PopModel.create(req.body).then(function(popCreated) {
     console.log(popCreated,'<- pop doc')
-    res.redirect('/')    
+    res.redirect('/search')    
   }).catch((err) => {
     console.log(err);
     res.send('There was an error check the terminal, or log the err object')
@@ -50,7 +56,7 @@ router.get('/auth/google', passport.authenticate(
 router.get('/oauth2callback', passport.authenticate(
   'google',
   {
-    successRedirect: '/',
+    successRedirect: '/search',
     failureRedirect: '/'
   }
 ));

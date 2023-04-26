@@ -3,8 +3,6 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-// var livereload = require("livereload");
-// var connectLiveReload = require("connect-livereload");
 var session = require('express-session');
 var passport = require('passport');
 var methodOverride = require('method-override');
@@ -14,17 +12,7 @@ require('./config/passport');
 
 const indexRouter = require('./routes/index');
 
-// const liveReloadServer = livereload.createServer();
-// liveReloadServer.watch(path.join(__dirname, 'public'));
-// liveReloadServer.server.once("connection", () => {
-//   setTimeout(() => {
-//     liveReloadServer.refresh("/");
-//   }, 100);
-// });
-
 const app = express();
-
-// app.use(connectLiveReload());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
