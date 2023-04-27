@@ -10,12 +10,13 @@ const isLoggedIn = require('../config/auth')
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
-router.get('/search', async function(req, res, next) {
+router.get('/search/:page', async function(req, res, next) {
   const upc = req.query.upc
-  const apiUrl = process.env.API_START+upc+process.env.API_END
-  const options = {
-    url:apiUrl
-  }
+  const page = req.params.page
+  const apiUrl = process.env.API_START+upc+process.env.API_MID+page+process.env.API_END
+  // const options = {
+  //   url:apiUrl
+  // }
   let count = 0
   if (req.user) {
   const query = await PopModel.find({userId:req.user._id})
@@ -23,8 +24,9 @@ router.get('/search', async function(req, res, next) {
   }
   axios.get(apiUrl).then((response) =>{
     const hobby = response.data.data
-    console.log(hobby)
-    res.render('search', { title: 'Express','hobbydb': hobby, 'upc':upc, 'count':count });
+    const lastPage = response.data.meta.lastPage
+    console.log(lastPage)
+    res.render('search', { title: 'Express','hobbydb': hobby, 'upc':upc, 'count':count, 'lastPage':lastPage, 'page':page });
 
   })
   // request(options,function(err,response,body) {
@@ -37,7 +39,7 @@ router.post('/add',isLoggedIn,function(req,res,next){
   req.body.userId = req.user._id
   PopModel.create(req.body).then(function(popCreated) {
     console.log(popCreated,'<- pop doc')
-    res.redirect('/search')    
+    res.redirect('/search/1')    
   }).catch((err) => {
     console.log(err);
     res.send('There was an error check the terminal, or log the err object')
@@ -58,7 +60,7 @@ router.get('/auth/google', passport.authenticate(
 router.get('/oauth2callback', passport.authenticate(
   'google',
   {
-    successRedirect: '/search',
+    successRedirect: '/search/1',
     failureRedirect: '/'
   }
 ));
