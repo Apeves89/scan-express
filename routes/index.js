@@ -10,7 +10,7 @@ const isLoggedIn = require('../config/auth')
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
-router.get('/search/:page', async function(req, res, next) {
+router.get('/search/:page',isLoggedIn, async function(req, res, next) {
   const upc = req.query.upc
   const page = req.params.page
   const apiUrl = process.env.API_START+upc+process.env.API_MID+page+process.env.API_END

@@ -1,11 +1,3 @@
-const queryParamsString = window.location.search
-console.log(queryParamsString)
-if (lastPage === 'true') console.log(lastPage)
-
-
-const searchForm = document.getElementById('search-form');
-console.log(searchForm);
-
 const scanner = new Html5QrcodeScanner('reader',{
     qrbox:{
       width:400,
