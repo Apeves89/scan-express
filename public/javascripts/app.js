@@ -2,7 +2,9 @@ const scanner = new Html5QrcodeScanner('reader',{
     qrbox:{
       width:500,
       height:250,
-    },fps:20,
+    },
+    fps:10,
+    showTorchButtonIfSupported:true,
   });
 
   scanner.render(success,error);
