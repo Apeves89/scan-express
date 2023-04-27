@@ -1,10 +1,20 @@
+
 const scanner = new Html5QrcodeScanner('reader',{
     qrbox:{
-      width:500,
-      height:250,
+      width:400,
+      height:200,
     },
     fps:10,
     showTorchButtonIfSupported:true,
+    formatsToSupport:[
+      Html5QrcodeSupportedFormats.UPC_E,
+      Html5QrcodeSupportedFormats.UPC_A,
+      Html5QrcodeSupportedFormats.UPC_EAN_EXTENSION,
+      Html5QrcodeSupportedFormats.QR_CODE,
+    ],
+    supportedScanTypes: [
+      Html5QrcodeScanType.SCAN_TYPE_FILE,
+      Html5QrcodeScanType.SCAN_TYPE_CAMERA]
   });
 
   scanner.render(success,error);

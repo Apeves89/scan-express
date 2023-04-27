@@ -1,9 +1,10 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const passport = require('passport');
-const request = require('request');
+const axios = require('axios')
 const PopModel = require('../models/pop')
 const isLoggedIn = require('../config/auth')
+// const request = require('request');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -19,15 +20,16 @@ router.get('/search', async function(req, res, next) {
   if (req.user) {
   const query = await PopModel.find({userId:req.user._id})
   count = await PopModel.countDocuments({userId:req.user._id})
-  console.log(query,count)
-  }else{
-  
   }
-  request(options,function(err,response,body) {
-    const data = JSON.parse(body)
-    res.render('search', { title: 'Express','hobbydb': data.data, 'upc':upc, 'count':count });
-        
+  axios.get(apiUrl).then((response) =>{
+    const hobby = response.data.data
+    console.log(hobby)
+    res.render('search', { title: 'Express','hobbydb': hobby, 'upc':upc, 'count':count });
+
   })
+  // request(options,function(err,response,body) {
+  //   const data = JSON.parse(body)
+  // })
 });
 router.post('/add',isLoggedIn,function(req,res,next){
   req.body.upc = Number(req.body.upc)
